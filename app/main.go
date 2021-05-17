@@ -44,6 +44,7 @@ func fileTest() error {
 func main() {
 	example()
 	// Run container with "-v host/path:/tmp/container/path"
+	// -v ~/share:/tmp/share for example
 	err := fileTest()
     if err != nil {
 		panic(err)
