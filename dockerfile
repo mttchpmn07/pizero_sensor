@@ -11,6 +11,5 @@ RUN CGO_ENABLED=1 go build -o app
 FROM arm32v6/alpine
 WORKDIR /app/
 COPY --from=build /tmp/app/app .
-RUN touch ~/share/test
 
 CMD ["./app"]
