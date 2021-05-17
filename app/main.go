@@ -10,7 +10,11 @@ void myprint(char* s) {
 */
 import "C"
 
-import "unsafe"
+import (
+	"io/ioutil"
+	"os"
+	"unsafe"
+)
 
 func example() {
 	cs := C.CString("Hello from stdio\n")
@@ -18,6 +22,30 @@ func example() {
 	C.free(unsafe.Pointer(cs))
 }
 
+func safeCreateDir(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		err := os.Mkdir(path, 0777)
+		   if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func fileTest() error {
+	err := safeCreateDir("/tmp/share")
+	if err != nil {
+	 return err
+ 	}
+	d1 := []byte("hello\ngo\n")
+    return ioutil.WriteFile("/tmp/share/out", d1, 0777)
+}
+
 func main() {
 	example()
+	// Run container with "-v host/path:/tmp/container/path"
+	err := fileTest()
+    if err != nil {
+		panic(err)
+	}
 }
